@@ -11,10 +11,14 @@ if (!JWT_SECRET) {
   throw new Error("JWT_SECRET is not set in environment variables");
 }
 
-export const signToken = (payload: JwtPayload): string => {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
-};
 
-export const verifyToken = (token: string): JwtPayload => {
-  return jwt.verify(token, JWT_SECRET) as JwtPayload;
-};
+
+/*
+const token = jwt.sign(
+  { id: user.id, email: user.email },
+  JWT_SECRET,
+  { expiresIn: "1h" }
+);
+
+const decoded = jwt.verify(token, JWT_SECRET);
+*/

@@ -4,8 +4,10 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { z } from "zod";
 import { AppDataSource } from "../config/data-source";
-import { signToken } from "../utils/jwt";
 import { User } from "../entities/User";
+
+import jwt,{ JwtPayload } from "jsonwebtoken";
+import { decodeJwt } from "../middleware/auth";
 
 /**
  * POST /api/auth/login
@@ -42,7 +44,14 @@ export const userLogin = async (req: Request, res: Response) => {
       return res.status(401).json({ success: false, message: "Invalid email or password" });
     }
 
-    const token = signToken({ role: "user", userId: user.id, email: user.email });
+    const JWT_SECRET =process.env.JWT_SECRET as string;
+    const JWT_EXPIRES_IN =process.env.JWT_EXPIRES_IN as string;
+    //const token = signToken({ role: "user", userId: user.id, email: user.email });
+    const token = jwt.sign(
+      {email,role:user},              //Payload....This is the data you want to store inside the token.
+      JWT_SECRET,            //Secret Key
+      { expiresIn: "1h" }
+    );
 
     return res.status(200).json({
       success: true,
@@ -61,9 +70,15 @@ export const userLogin = async (req: Request, res: Response) => {
  * Example protected route for a logged-in user.
  */
 export const getMe = async (req: Request, res: Response) => {
+  const token = req.header("Authorization")?.replace("Bearer ", "");
+  const decodeToken = decodeJwt(token);
+
+  console.log(decodeToken)
+  console.log(decodeToken.role?.id);
   try {
     const user = await AppDataSource.getRepository(User).findOne({
-      where: { id: req.auth?.userId },
+      where: { id: decodeToken.role?.id },
+      // where: { id:1 }, // for testn api
       select: {
         id: true,
         name: true,

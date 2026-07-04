@@ -10,7 +10,7 @@ const router = Router();
 router.post("/login", adminLogin);
 
 // Protected: only an authenticated admin can register a new user
-router.post("/register-user", authenticate, requireAdmin, registerUser);
+router.post("/registerUser", authenticate, requireAdmin, registerUser);
 
 // Protected: only an authenticated admin can view the user list
 router.get("/users", authenticate, requireAdmin, listUsers);
