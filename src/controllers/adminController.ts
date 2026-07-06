@@ -50,7 +50,7 @@ export const adminLogin = async (req: Request, res: Response) => {
   { expiresIn: "1h" }
 );
 
-  console.log("Admin Login Sucesfully");
+  console.log(".................Admin Login Sucesfully.............");
   return res.status(200).json({
     success: true,
     message: "Admin login successful",
@@ -92,6 +92,8 @@ export const registerUser = async (req: Request, res: Response) => {
     const user = userRepo.create({ name, email, password_hash: passwordHash });
     const savedUser = await userRepo.save(user);
 
+    console.log("User registered successfully:", savedUser);
+
     return res.status(201).json({
       success: true,
       message: "User registered successfully",
@@ -125,6 +127,8 @@ export const listUsers = async (_req: Request, res: Response) => {
       },
       order: { created_at: "DESC" },
     });
+    console.log("List of users retrieved successfully:", users);
+
     return res.status(200).json({ success: true, users });
   } catch (err) {
     console.error("listUsers error:", err);

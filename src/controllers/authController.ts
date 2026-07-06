@@ -53,6 +53,8 @@ export const userLogin = async (req: Request, res: Response) => {
       { expiresIn: "1h" }
     );
 
+    console
+
     return res.status(200).json({
       success: true,
       message: "Login successful",
@@ -90,6 +92,9 @@ export const getMe = async (req: Request, res: Response) => {
     if (!user) {
       return res.status(404).json({ success: false, message: "User not found" });
     }
+
+    console.log("User profile retrieved successfully:", user);
+
     return res.status(200).json({ success: true, user });
   } catch (err) {
     console.error("getMe error:", err);
