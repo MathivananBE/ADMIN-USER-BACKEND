@@ -7,12 +7,14 @@ import { authenticate, requireAdmin } from "../middleware/auth";
 const router = Router();
 
 // Public: admin logs in with credentials from .env
-router.post("/login", adminLogin);
+router.get("/login", adminLogin);
 
 // Protected: only an authenticated admin can register a new user
 router.post("/registerUser", authenticate, requireAdmin, registerUser);
 
 // Protected: only an authenticated admin can view the user list
 router.get("/users", authenticate, requireAdmin, listUsers);
+
+
 
 export default router;

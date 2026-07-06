@@ -48,7 +48,7 @@ export const userLogin = async (req: Request, res: Response) => {
     const JWT_EXPIRES_IN =process.env.JWT_EXPIRES_IN as string;
     //const token = signToken({ role: "user", userId: user.id, email: user.email });
     const token = jwt.sign(
-      {email,role:user},              //Payload....This is the data you want to store inside the token.
+      {email,user:user,role:"user"},              //Payload....This is the data you want to store inside the token.
       JWT_SECRET,            //Secret Key
       { expiresIn: "1h" }
     );
@@ -77,7 +77,7 @@ export const getMe = async (req: Request, res: Response) => {
   console.log(decodeToken.role?.id);
   try {
     const user = await AppDataSource.getRepository(User).findOne({
-      where: { id: decodeToken.role?.id },
+      where: { id: decodeToken.user?.id },
       // where: { id:1 }, // for testn api
       select: {
         id: true,

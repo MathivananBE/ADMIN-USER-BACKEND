@@ -45,18 +45,21 @@ export const adminLogin = async (req: Request, res: Response) => {
   const JWT_SECRET = process.env.JWT_SECRET as string;  
 
   const token = jwt.sign(
-  {email,role:"adimin"},              //Payload....This is the data you want to store inside the token.
+  {email,role:"admin"},              //Payload....This is the data you want to store inside the token.
   JWT_SECRET,            //Secret Key
   { expiresIn: "1h" }
 );
 
+  console.log("Admin Login Sucesfully");
   return res.status(200).json({
     success: true,
     message: "Admin login successful",
     role:"admin",
     token
   });
+  
 };
+
 
 /**
  * POST /api/admin/register-user

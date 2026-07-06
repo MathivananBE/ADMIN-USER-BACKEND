@@ -35,9 +35,13 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
 };
 
 export const requireAdmin = (req: Request, res: Response, next: NextFunction) => {
+
+  const token = req.header("Authorization")?.replace("Bearer ", "");
+  const decodeToken = decodeJwt(token);
+
+
   //if (req.auth?.role !== "admin") 
-  const {role}=req.body;
-  if (role!=="admin") {
+  if (decodeToken.role!=="admin") {
     return res.status(403).json({ success: false, message: "Admin access required" });
   }
   next();
@@ -45,8 +49,11 @@ export const requireAdmin = (req: Request, res: Response, next: NextFunction) =>
 
 export const requireUser = (req: Request, res: Response, next: NextFunction) => {
   //if (req.auth?.role !== "user") {
-   const {role}=req.body;
-  if (role!=="user") {
+  const token1 = req.header("Authorization")?.replace("Bearer ", "");
+  const decodeToken1 = decodeJwt(token1);
+  console.log(decodeToken1.role);
+   
+ if (decodeToken1.role!=="user") {
     return res.status(403).json({ success: false, message: "User access required" });
   }
   next();
