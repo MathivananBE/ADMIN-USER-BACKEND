@@ -53,7 +53,7 @@ export const userLogin = async (req: Request, res: Response) => {
       { expiresIn: "1h" }
     );
 
-    console
+    console.log("======================user login successfully=========================");
 
     return res.status(200).json({
       success: true,
